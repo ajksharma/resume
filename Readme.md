@@ -23,26 +23,26 @@ thor resume:build resume.rl
   name  '<Your Name>'
   email '<Your email>'
 ```  
-Skill that goes to the Ruby group
-Sybmols here are CamelCased for skills and titlized for :under
+A skill that goes to the Ruby category.
 ```ruby
   skill :camel_casing, :under => :ruby
 ```  
+Sybmols here are CamelCased for skills and titlized for :under
 If you need spacing use a string
 ```ruby
   skill 'I Like My Spaces', :under => :whitespace
 ```  
-Other skill
+If you do not specify, skills get placed into the 'Other' category.
 ```ruby
   skill :cat_throwing
 ```  
-Hobbies work the same way
+Hobbies work the same way.
 ```ruby
   hobby :markdown, :under => :lingua
 ```  
-Jobs and Projects are pretty much the same with some differences
+Jobs and Projects are pretty much the same with some differences.
   
-Jobs require :at for employer
+Jobs require :at for employer.
 ```ruby
   job :programmer, :at => :hal 
     # Dates are month, year -> whatever DateTime.parse can handle for month
@@ -55,7 +55,7 @@ HERE
   end
 ```
 
-Projects do not use :at, but have links
+Projects do not use :at, but have links.
 ```ruby
   project :the_internets
     site 'http://www.google.com'
@@ -68,15 +68,15 @@ Projects do not use :at, but have links
   end
 ```
 
-Code Samples are simple 
+Code Samples are simple.
 You put the name of your public GitHub repository and
 it will figure out the link and tuck in a summary as well.
 ```ruby
   sample :my_repo_name, 'This is an awesome repo'
 ```
 
-Schools have summary and degree, you don't put dates for the specific school
-it automaticaly sets its dates to the earliest degree started to the latest degree finished.
+Schools have summary and degree. You don't put dates for the specific school.
+It automaticaly sets its dates from the earliest degree started to the latest degree finished.
 ```ruby
   school :arkham_institute
     # This should resolve BA, MBA, BS, and more...
