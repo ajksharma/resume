@@ -1,18 +1,21 @@
 # Resume
 The resume builder for my resume.
 
-## Installation
+## What is it?
+* A DSL Library to allow someone to generate a resume PDF.
+* Also, has my resume in said DSL that can be generated.
 
+## Umm... Why !!??
+* I needed some decent code samples for my resume, so why not?
+* And, I am the type of person that will spend a saturday coding a DSL.
+
+## Installation
 ```bash
 git clone https://github.com/bloodycelt/resume.git resume
 cd resume
 bundle install
 thor resume:build resume.rl
 ```
-
-## Umm... Why !!??
-* I needed some decent code samples for my resume, so why not?
-* And, I am the type of person that will spend a saturday coding a DSL.
 
 ## DSL
 
