@@ -27,7 +27,7 @@ A skill that goes to the Ruby category.
 ```ruby
   skill :camel_casing, :under => :ruby
 ```  
-Sybmols here are CamelCased for skills and titlized for :under
+Sybmols here are CamelCased for skills and titlized for :under.
 If you need spacing use a string
 ```ruby
   skill 'I Like My Spaces', :under => :whitespace
