@@ -1,10 +1,18 @@
-#!/usr/bin/env ruby
-
 module Resume
   module Experience 
     class Base
       attr_accessor :title, :at, :start_on, :end_at, :summary, :notes
-
+      
+      def attributes
+        {
+          :title      => self.title.to_s.titleize,
+          :end_date   => self.end_at,
+          :start_date => self.start_on,
+          :text       => self.summary,
+          :notes      => self.notes
+        } 
+      end
+      
       def initialize(attributes = {}, &block) 
         super()
         attributes.each { |k,v| self.send :"#{k}=", v }

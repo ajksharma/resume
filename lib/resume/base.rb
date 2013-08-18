@@ -1,13 +1,20 @@
 #!/usr/bin/env ruby
 
+require 'resume/experience'
+
 module Resume
 
   class Base
-
+    extend Command
+    extend Experience
+    
     attr_accessor :summary
-
+    
+    has_experience :job, :project, :sample, :school
+    
     def initialize(filename)
 
+      # This part loads a script file which calls the commands to build resume objects.
       proc = ::Proc.new {}
       eval(::File.open(filename, 'r').read, proc.binding, filename)
 
@@ -24,16 +31,18 @@ module Resume
           pdf.h2    'Summary'
           pdf.text  self.summary, :indent_paragraphs => 20
         end
-        pdf.group { pdf.print_experience self.jobs     }
-        pdf.group { pdf.print_projects   self.projects }
+        pdf.print_experience self.jobs
+        pdf.print_experience self.projects, :title => 'Projects'
+        pdf.print_experience self.samples,  :title => 'Code Samples'
         pdf.group { pdf.print_samples    self.samples  }
-        pdf.group { pdf.print_education  self.schools  }
+        pds.print_experience self.schools,  :title => 'Education'
         pdf.group do
           pdf.skills_list 'Hobbies/Interests', self.hobbies
         end
       end 
     end
   
+    # commands for the dsl
     def email (value = nil)
       @email = value || @email || ''
     end
@@ -47,40 +56,12 @@ module Resume
       Hash[@hobbies.except('Other').sort].merge @hobbies.slice('Other')
     end
 
-    def job (title, options = { :at => 'Please put at least at'}, &block)
-      ( @jobs ||= [] ) << Experience::Job.new(:title => "#{title.to_s.titleize} at #{options[:at].to_s.titleize}", &block )
-    end
-
-    def jobs
-      ( @jobs ||= [] ).sort { |a,b| b.start_on <=> a.start_on }
-    end
-
     def name (value = nil)
       @name = value || @name || 'Please specify name'
     end
 
-    def project (title, &block)
-      ( @projects ||= [] ) << Experience::Project.new(:title => "#{title.to_s.camelize}", &block)
-    end
-
-    def projects
-      @projects ||= []
-    end
-
-    def sample (title, summary)
-      ( @samples ||= [] ) << Experience::Base.new(:title => title, :summary => summary)
-    end
-
     def samples
-      @samples ||= []
-    end
-
-    def school(title, &block)
-      ( @schools ||= [] ) << Experience::School.new(:title => "#{title.to_s.camelize}", &block)
-    end
-
-    def schools
-      ( @schools ||= [] ).sort { |a,b| b.start_on <=> a.start_on }
+      ( @samples ||= [] ).sort { |a,b| a.title <=> b.title }
     end
 
     def skill(value, opts = { :under => :other } )

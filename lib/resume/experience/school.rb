@@ -1,10 +1,12 @@
-#!/usr/bin/env ruby
-
 module Resume
   module Experience 
 
     class School < Base
 
+      def attributes 
+        super.slice(:title, :text )
+      end
+      
       def degree (title, &block)
         ( @degrees ||= [] ) << Degree.new(:title => title, &block)
       end

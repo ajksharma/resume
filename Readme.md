@@ -14,5 +14,3 @@ thor resume:build resume.rl
 * Because I was bored.
 * Also, I needed some decent code samples for my resume, so why not?
 * Yes, I could really use a life, do you have any to spare? 
-
-
