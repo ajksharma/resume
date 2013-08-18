@@ -11,9 +11,8 @@ thor resume:build resume.rl
 ```
 
 ## Umm... Why !!??
-* Because I was bored.
-* Also, I needed some decent code samples for my resume, so why not?
-* Yes, I could really use a life, do you have any to spare? 
+* I needed some decent code samples for my resume, so why not?
+* And, I am the type of person that will spend a saturday coding a DSL.
 
 ## DSL
 
@@ -28,7 +27,7 @@ Sybmols here are CamelCased for skills and titlized for :under
 ```  
 If you need spacing use a string
 ```ruby
-  skill 'I Like My Spaces', :under => :strange
+  skill 'I Like My Spaces', :under => :whitespace
 ```  
 Other skill
 ```ruby
@@ -36,21 +35,20 @@ Other skill
 ```  
 Hobbies work the same way
 ```ruby
-  hobby :markdown, :under => :no_life
+  hobby :markdown, :under => :lingua
 ```  
 Jobs and Projects are pretty much the same with some differences
   
 Jobs require :at for employer
 ```ruby
-  job :assasin, :at => :sony # Megatokyo reference
+  job :programmer, :at => :hal 
     # Dates are month, year -> whatever DateTime.parse can handle for month
     from :apr, 2005
     to   :september, 2009
     summarize <<HERE
-    I can do HERE documents which slowly kill people by making them want to die!!!!
-    HAHAHAHAHAHA
+    Wrote lots of HERE documents for HAL.
 HERE
-    note 'A small bulleted item can go here'
+    note 'A small bulleted item can go here.'
   end
 ```
 
@@ -61,8 +59,8 @@ Projects do not use :at, but have links
     from :feb, 1987
     # Oh, btw, :present uses Time.now
     to   :present
-    summarize 'Workin with Al Gore'
-    tech 'Like note, just an alias, usually used for technology used in the project'
+    summarize 'Working with Al Gore.'
+    tech 'Like note, just an alias, usually used for technology used in the project.'
     tech 'Enthusiasm'
   end
 ```
@@ -77,14 +75,16 @@ it will figure out the link and tuck in a summary as well.
 Schools have summary and degree, you don't put dates for the specific school
 it automaticaly sets its dates to the earliest degree started to the latest degree finished.
 ```ruby
-  school :school_of_hard_knocks
+  school :arkham_institute
     # This should resolve BA, MBA, BS, and more...
     degree :ba
-      major :lead_pipe
-      major :sledgehammer
+      # Majors get joined with a '/' in the degree entry.
+      # You can have as many as you want.
+      major :computer_science
+      major :computer_engineering
       from :jul, 1982
       to   :present
     end
-    summarize "I'm a survivor."
+    summarize "What is it like outside?"
   end
 ```
