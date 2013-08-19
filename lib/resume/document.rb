@@ -3,17 +3,24 @@
 module Resume
 
   class Document < ::Prawn::Document
-
+    @@print_background = true
+    
+    def self.print_background= (value)
+      @@print_background = value
+    end
+    
     def start_new_page(options = {})
       ret   = super
       start = self.cursor
-      self.canvas do
-        c = self.image File.join(File.dirname(__FILE__),'/images/straws.png'), :at => [0,0]
+      if @@print_background == true
+        self.canvas do
+          c = self.image File.join(File.dirname(__FILE__),'/images/straws.png'), :at => [0,0]
 
-        # Build a coordinate map
-        m = (0..(self.bounds.width + c.width)).step(c.width).map do |x|
-          (0..(self.bounds.height + c.height)).step(c.height).map do |y|
-            self.image File.join(File.dirname(__FILE__),'/images/straws.png'), :at => [x, y]
+          # Build a coordinate map
+          m = (0..(self.bounds.width + c.width)).step(c.width).map do |x|
+            (0..(self.bounds.height + c.height)).step(c.height).map do |y|
+              self.image File.join(File.dirname(__FILE__),'/images/straws.png'), :at => [x, y]
+            end
           end
         end
       end
@@ -56,7 +63,7 @@ module Resume
     def print_experience (list, opts = {})
       self.group do
         self.h2 opts[:title] || 'Experience'
-        list.inject([]) { |h,i| h << self._print_experience(i) }
+        list.inject([]) { |h,i| h << _print_experience(i) }
       end
     end
     

@@ -5,24 +5,24 @@ require 'resume/experience'
 module Resume
 
   class Base
-    extend Command
     extend Experience
     
     attr_accessor :summary
     
     has_experience :job, :project, :sample, :school
     
-    def initialize(filename)
+    def initialize(filename, opts = {})
 
       # This part loads a script file which calls the commands to build resume objects.
       proc = ::Proc.new {}
       eval(::File.open(filename, 'r').read, proc.binding, filename)
 
+      Document.print_background = false if opts[:print]
       Document.generate("#{self.name.titleize}'s Resume.pdf") do |pdf|
         pdf.font('Helvetica', :size => 16, :style => :bold) do
           pdf.text self.name
         end
-        pdf.text             self.title
+        pdf.text             self.title.to_s.titleize
         pdf.formatted_text [ pdf.href(self.email, "mailto:#{self.email}") ]
         pdf.group do
           pdf.skills_list 'Meta', self.skills
@@ -34,8 +34,7 @@ module Resume
         pdf.print_experience self.jobs
         pdf.print_experience self.projects, :title => 'Projects'
         pdf.print_experience self.samples,  :title => 'Code Samples'
-        pdf.group { pdf.print_samples    self.samples  }
-        pds.print_experience self.schools,  :title => 'Education'
+        pdf.print_experience self.schools,  :title => 'Education'
         pdf.group do
           pdf.skills_list 'Hobbies/Interests', self.hobbies
         end
