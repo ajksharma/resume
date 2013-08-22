@@ -121,8 +121,13 @@ project 'Synergy' do
   tech 'Microsoft Powerpoint'
 end
 
-sample :function, :summary => 'A Ruby gem that mimics Python functions'
-sample :resume,   :summary => 'The code that built this resume'
+sample :function, 
+       :summary => 'A Ruby gem that mimics Python functions', 
+       :under   => :bloodycelt
+
+sample :resume,   
+       :summary => 'The code that built this resume', 
+       :under   => :bloodycelt
 
 school :university_of_hartford do
   degree :ba do
