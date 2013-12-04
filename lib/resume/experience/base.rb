@@ -40,7 +40,7 @@ module Resume
       
       def _parse_date(month, year)
         if month == :present
-          Time.now
+          :present
         elsif year
           Time.new(year,DateTime.parse("#{month}").month)
         end

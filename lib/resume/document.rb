@@ -83,8 +83,14 @@ module Resume
         
         if attributes[:start_date] && attributes[:end_date]
           self.formatted_text [
-            { :text =>  [ attributes[:start_date], attributes[:end_date] ].map do 
-                          |d| d.strftime("%B %Y") 
+            { :text =>  [ attributes[:start_date], 
+                          attributes[:end_date] 
+                        ].map do |d| 
+                          if(d.respond_to?(:strftime))
+                            d.strftime("%B %Y") 
+                          else
+                            "#{d}".titleize
+                          end
                         end.join(' - ') << ' ' 
             },
             _time_difference(attributes[:start_date],attributes[:end_date])
@@ -103,7 +109,14 @@ module Resume
     end
     
     def _time_difference(start_date, end_date)
-      t      = TimeDifference.between(start_date,end_date)
+      t      = TimeDifference.between(
+        *([start_date,end_date].map do |d|
+            if(d == :present)
+              Time.now
+            else
+              d
+            end
+          end))
       years  = t.in_years.floor
       months = t.in_months.floor % 12
 
