@@ -1,23 +1,23 @@
 # Resume
 The resume builder for my resume.
-
-## What is it?
 * A DSL Library to allow someone to generate a resume PDF.
 * Also, has my resume in said DSL that can be generated.
-
-## Umm... Why !!??
-* I needed some decent code samples for my resume, so why not?
-* And, I am the type of person that will spend a saturday coding a DSL.
 
 ## Installation
 ```bash
 git clone https://github.com/bloodycelt/resume.git resume
 cd resume
 bundle install
+```
+
+## Usage
+Build a rl file (or whatever you want to call it) using the DSL described below
+and thor will generate a pdf (named <Your name>'s Resume.pdf ).
+```bash
 thor resume:build resume.rl
 ```
 
-## DSL
+## The DSL
 
 ```ruby
   name  '<Your Name>'
@@ -72,7 +72,9 @@ Code Samples are simple.
 You put the name of your public GitHub repository and
 it will figure out the link and tuck in a summary as well.
 ```ruby
-  sample :my_repo_name, 'This is an awesome repo'
+  sample :my_repo_name, 
+         :summary => 'This is an awesome repo'
+         :under   => :github_account
 ```
 
 Schools have summary and degree. You don't put dates for the specific school.
@@ -91,3 +93,15 @@ It automaticaly sets its dates from the earliest degree started to the latest de
     summarize "What is it like outside?"
   end
 ```
+
+## Objective
+* I needed some decent code samples for my resume, so why not?
+* And, I am the type of person that will spend a saturday coding a DSL.
+
+## Contributing
+This project is for my profolio, so I most likely will not accept pull requests. 
+You are more than welcome to fork it however.
+
+## License
+Under the MIT LICENSE.
+See the MIT-LICENSE file for details.
