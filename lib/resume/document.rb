@@ -3,12 +3,74 @@
 module Resume
 
   class Document < ::Prawn::Document
+    
+    attr_accessor :resume
+    
+    delegate :name, :title, :email, :hobbies, :skills, :summary, :to => :resume, :prefix => true
+    
     @@print_background = true
     
     def self.print_background= (value)
       @@print_background = value
     end
     
+    # Set it up so resume actually stashes order of executions 
+    # and this takes that ordered set and executes pdf commands on them.
+    def initialize (resume, options={}, &block)
+      super(options, &block)
+      
+      self.resume = Resume::Base.new resume, self
+      
+      # self.contact_info resume.name, :email => resume.email, :title => resume.title
+
+      # self.skills_list 'Meta',  resume.skills
+      
+      # self.group do
+      #  self.h2    'Summary'
+      #  self.text  resume.summary, :indent_paragraphs => 20
+      # end
+      
+      self.experience :jobs
+      self.experience :projects, :title => 'Projects'
+      self.experience :samples,  :title => 'Code Samples'
+      self.experience :schools,  :title => 'Education'
+      
+      self.group do
+        self.skills_list 'Hobbies/Interests', resume_hobbies
+      end
+      
+    end
+   
+    def email (data)
+      self.formatted_text [ self.href(data, "mailto:#{data}") ]
+    end
+    
+    def experience (xp, opts = {})
+      self.group do
+        self.h2 opts[:title] || 'Experience'
+        resume.send(xp.to_sym).inject([]) { |h,i| h << _print_experience(i) }
+      end
+    end
+    
+    def name (data)
+      self.h1(data)
+    end
+    
+    def skills (data)
+      self.skills_list 'Meta', data
+    end
+    
+    def summary (data)
+      self.group do
+        self.h2 'Summary'
+        self.text data, :indent_paragraphs => 20
+      end
+    end
+    
+    def title (data)
+      self.text data.to_s.titleize
+    end
+      
     def start_new_page(options = {})
       ret   = super
       start = self.cursor
@@ -28,6 +90,10 @@ module Resume
       return ret
     end
 
+    def h1 (t)
+      self.font('Helvetica', :size => 16, :style => :bold) { self.text t }
+    end
+    
     def h2 (t) 
       group do
         self.stroke { self.horizontal_rule }
@@ -57,13 +123,6 @@ module Resume
                         :padding => [0,0,0,0],
                         :size => 12,
                         :height => 18 })
-      end
-    end
-
-    def print_experience (list, opts = {})
-      self.group do
-        self.h2 opts[:title] || 'Experience'
-        list.inject([]) { |h,i| h << _print_experience(i) }
       end
     end
     
