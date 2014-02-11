@@ -69,12 +69,20 @@ job :educational_technologist, :at => 'University of Hartford FCLD (Work-Study)'
   summarize 'Helped faculty acclimate to blackboard, and assited with adminstrative tasks.'
 end
 
+project 'WebADMIT' do
+  from :jan, 2014
+  to   :present
+  summarize 'Admissions portal for Colleges, aggregates data from 30+ CAS services'
+  tech 'Ruby on Rails 3.0'
+  tech 'Postgres 8.x'
+end
+
 project :my_psych_track do
   site 'http://portal.mypsychtrack.com'
   from :mar, 2012
-  to   :present
+  to   :dec, 2014
   summarize 'A web portal that helps psychology students track their "hours".'
-  tech 'Apach SOLR'
+  tech 'Apache SOLR'
   tech 'Ruby on Rails 3.2'
   tech 'Postgres 9.1'
 end
@@ -82,11 +90,12 @@ end
 project 'NursingCAS' do
   site 'http://portal.nursingcas.org'
   from :oct, 2009 
-  to   :present 
+  to   :feb, 2014 
   summarize 'A web portal that allows for application to multiple schools in the field of Nursing (AACN).'
   tech 'Perl 5.8'
   tech 'CGI::Application'
   tech 'M$ SQL Server 2005'
+  tech 'AngularJS'
 end 
 
 project 'CAS Financial Reporting Library' do
@@ -100,7 +109,7 @@ end
 
 project 'AACPMAS' do
   site 'http://portal.aacpmas.org'
-  from :mar, 2010
+  from :apr, 2009
   to   :oct, 2010
   summarize 'A web portal for Podiatry Admissions'
   tech 'Perl 5.8'
@@ -131,8 +140,8 @@ sample :resume,
 
 school :university_of_hartford do
   degree :ba do
-    from 2000
-    to   2005
+#    from 2000
+#    to   2005
     major :computer_science 
     major :creative_writing
   end
