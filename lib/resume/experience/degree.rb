@@ -7,7 +7,9 @@ module Resume
       def title
         [ _degree_lookup[super.to_sym],
           self.majors.join("/"),
-          "#{self.start_on.year} - #{self.end_at.year}"
+          if self.start_on && self.end_at
+            "#{self.start_on.year} - #{self.end_at.year}"
+          end
         ].compact.join(' ')
       end
 
