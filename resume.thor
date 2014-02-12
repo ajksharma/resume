@@ -11,7 +11,11 @@ module Resume
     desc "build", "Generate a resume"
     method_option :print, :aliases => "-p", :desc => 'Skip generating a background image for better printing'
     def build(file)
-      ::Resume::Base.new File.join(File.dirname(__FILE__), file), :print => options[:print]
+      ::Resume::Document.print_background = false if options[:print]
+
+      resume = File.read(File.join(File.dirname(__FILE__), file))
+      pdf    = ::Resume::Document.new resume
+      pdf.render_file
     end
   end
 end

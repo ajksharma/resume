@@ -1,4 +1,4 @@
-                          
+
 name                      'Jason Kenney'
 email                     'therealjasonkenney@gmail.com'
 
@@ -140,8 +140,6 @@ sample :resume,
 
 school :university_of_hartford do
   degree :ba do
-#    from 2000
-#    to   2005
     major :computer_science 
     major :creative_writing
   end
@@ -158,3 +156,14 @@ hobby 'Code Spelunking'
 hobby 'Digital Photography'
 hobby 'Interactive Media'
 hobby :hiking
+
+print :name
+print :title
+print :email
+print :skills_list, :skills,    :title => 'Meta'
+print :summary
+print :experience,  :jobs,      :title => 'Experience'
+print :experience,  :projects
+print :experience,  :samples,   :title => 'Code Samples'
+print :experience,  :schools,   :title => 'Education'
+print :skills_list, :hobbies,   :title => 'Hobbies/Interests'

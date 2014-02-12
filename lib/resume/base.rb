@@ -7,40 +7,16 @@ module Resume
   class Base
     extend Experience
     
-    attr_accessor :summary
+    attr_accessor :document, :summary
     
     has_experience :job, :project, :sample, :school
-    
-    def initialize(filename, opts = {})
+   
+    def initialize(content, opts = {})
+      self.document = opts[:render]
+      proc          = ::Proc.new {}
+      eval(content, proc.binding, 'resume')
+    end 
 
-      # This part loads a script file which calls the commands to build resume objects.
-      proc = ::Proc.new {}
-      eval(::File.open(filename, 'r').read, proc.binding, filename)
-
-      Document.print_background = false if opts[:print]
-      Document.generate("#{self.name.titleize}'s Resume.pdf") do |pdf|
-        pdf.font('Helvetica', :size => 16, :style => :bold) do
-          pdf.text self.name
-        end
-        pdf.text             self.title.to_s.titleize
-        pdf.formatted_text [ pdf.href(self.email, "mailto:#{self.email}") ]
-        pdf.group do
-          pdf.skills_list 'Meta', self.skills
-        end
-        pdf.group do
-          pdf.h2    'Summary'
-          pdf.text  self.summary, :indent_paragraphs => 20
-        end
-        pdf.print_experience self.jobs
-        pdf.print_experience self.projects, :title => 'Projects'
-        pdf.print_experience self.samples,  :title => 'Code Samples'
-        pdf.print_experience self.schools,  :title => 'Education'
-        pdf.group do
-          pdf.skills_list 'Hobbies/Interests', self.hobbies
-        end
-      end 
-    end
-  
     # commands for the dsl
     def email (value = nil)
       @email = value || @email || ''
@@ -63,6 +39,23 @@ module Resume
       ( @samples ||= [] ).sort { |a,b| a.title <=> b.title }
     end
 
+    def print(method, data = nil, opts = nil)
+      # TODO: Check if Module defines method, and raise a not defined.
+      # here.
+      # class << Something; self; end
+      raise NotImplementedError unless self.document.class.method_defined?(method)
+
+      data = if data.nil? && self.class.method_defined?(method)
+                self.send(method)
+              else
+                self.send(data)
+              end
+
+      args = [ data, opts ].compact
+
+      self.document.send(method, *args)
+    end
+
     def skill(value, opts = { :under => :other } )
       ( ( @skills ||= {} )[opts[:under].to_s.titleize] ||= [] ) << value.to_s.camelize
     end
@@ -78,6 +71,12 @@ module Resume
 
     def title
       self.jobs.first.try(:title)
+    end
+
+    private
+
+    def commands
+      @commands ||= []
     end
   end
 end

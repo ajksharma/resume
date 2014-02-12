@@ -6,49 +6,34 @@ module Resume
     
     attr_accessor :resume
     
-    delegate :name, :title, :email, :hobbies, :skills, :summary, :to => :resume, :prefix => true
+    delegate :name, :to => :resume, :prefix => true
     
     @@print_background = true
     
     def self.print_background= (value)
       @@print_background = value
     end
-    
-    # Set it up so resume actually stashes order of executions 
-    # and this takes that ordered set and executes pdf commands on them.
+   
     def initialize (resume, options={}, &block)
       super(options, &block)
-      
-      self.resume = Resume::Base.new resume, self
-      
-      # self.contact_info resume.name, :email => resume.email, :title => resume.title
 
-      # self.skills_list 'Meta',  resume.skills
-      
-      # self.group do
-      #  self.h2    'Summary'
-      #  self.text  resume.summary, :indent_paragraphs => 20
-      # end
-      
-      self.experience :jobs
-      self.experience :projects, :title => 'Projects'
-      self.experience :samples,  :title => 'Code Samples'
-      self.experience :schools,  :title => 'Education'
-      
-      self.group do
-        self.skills_list 'Hobbies/Interests', resume_hobbies
-      end
-      
+      self.resume = Base.new resume, :render => self
+
+      self
     end
-   
+
+    def render_file(*args)
+      super("#{self.resume_name.titleize}'s Resume.pdf")
+    end       
+
     def email (data)
       self.formatted_text [ self.href(data, "mailto:#{data}") ]
     end
     
-    def experience (xp, opts = {})
+    def experience (data, opts = {})
       self.group do
         self.h2 opts[:title] || 'Experience'
-        resume.send(xp.to_sym).inject([]) { |h,i| h << _print_experience(i) }
+        data.inject([]) { |h,i| h << _print_experience(i) }
       end
     end
     
@@ -91,7 +76,9 @@ module Resume
     end
 
     def h1 (t)
-      self.font('Helvetica', :size => 16, :style => :bold) { self.text t }
+      self.font('Helvetica', :size => 16, :style => :bold) do
+        self.formatted_text [{:text => t }]
+      end
     end
     
     def h2 (t) 
@@ -112,10 +99,10 @@ module Resume
       }
     end
 
-    def skills_list (heading, skills)
+    def skills_list (data, opts = {})
       self.group do
-        self.h2 heading
-        self.table(skills.to_a.map { |i| [ "\u2022 #{i[0]}", i[1].join(', ') ] }, 
+        self.h2 opts[:title] || 'Skills'
+        self.table(data.to_a.map { |i| [ "\u2022 #{i[0]}", i[1].join(', ') ] }, 
                   :cell_style => {
                         :borders  => [],
                         :overflow => :shrink_to_fit, 
