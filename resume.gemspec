@@ -32,5 +32,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport',   '>= 3.2'
   s.add_dependency 'time_difference', '~> 0.2.0'
   s.add_dependency 'prawn'
+  s.add_dependency 'thor'
   
 end
