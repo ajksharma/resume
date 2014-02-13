@@ -15,9 +15,23 @@ module Resume
       self.document = opts[:render]
       proc          = ::Proc.new {}
       eval(content, proc.binding, 'resume')
+      super()
     end 
 
+    def render
+      commands.each do |command|
+        (method, args) = command
+        self.document.send(method, *args)
+      end
+
+      self.document  
+    end
+
     # commands for the dsl
+    def background (value = nil)
+      @background = value || @background || nil
+    end
+  
     def email (value = nil)
       @email = value || @email || ''
     end
@@ -53,7 +67,8 @@ module Resume
 
       args = [ data, opts ].compact
 
-      self.document.send(method, *args)
+      commands << [ method, args ]
+      # self.document.send(method, *args)
     end
 
     def skill(value, opts = { :under => :other } )
@@ -78,5 +93,7 @@ module Resume
     def commands
       @commands ||= []
     end
+
+
   end
 end

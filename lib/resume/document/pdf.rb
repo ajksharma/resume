@@ -2,8 +2,8 @@
 
 class Resume::Document::Pdf < ::Prawn::Document
   prepend ::Resume::Document
-  
-  delegate :name, :to => :resume, :prefix => true
+
+  delegate :background, :name, :to => :resume, :prefix => true
 
   @@print_background = false
 
@@ -62,14 +62,14 @@ class Resume::Document::Pdf < ::Prawn::Document
   def start_new_page(options = {})
     ret   = super
     start = self.cursor
-    unless @@print_background == false
+    unless @@print_background == false || self.resume_background.nil?
       self.canvas do
-        c = self.image @@print_background, :at => [0,0]
+        c = self.image self.resume_background, :at => [0,0]
 
         # Build a coordinate map
         m = (0..(self.bounds.width + c.width)).step(c.width).map do |x|
           (0..(self.bounds.height + c.height)).step(c.height).map do |y|
-            self.image @@print_background, :at => [x, y]
+            self.image self.resume_background, :at => [x, y]
           end
         end
       end
