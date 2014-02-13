@@ -9,6 +9,7 @@ Gem::Specification.new do |s|
     lib/resume.rb
     lib/resume/base.rb
     lib/resume/document.rb
+    lib/resume/document/pdf.rb
     lib/resume/experience.rb
     lib/resume/experience/base.rb
     lib/resume/experience/degree.rb
