@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+$0 = 'resume'
+
+require 'resume'
+
+Resume::Cli.start

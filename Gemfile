@@ -1,8 +1,14 @@
 source 'https://rubygems.org'
 
-gem 'prawn'
+ruby '2.0.0'
+
+gemspec
+
+gem 'pdf-inspector', :require => 'pdf/inspector'
 gem 'thor'
-gem 'time_difference', '~> 0.2.0'
 
 gem 'resume', :path => '.'
 
+gem 'rspec'
+
+gem 'simplecov', :require => false
