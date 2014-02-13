@@ -4,17 +4,16 @@ The resume builder for my resume.
 * Also, has my resume in said DSL that can be generated.
 
 ## Installation
-```bash
-git clone https://github.com/bloodycelt/resume.git resume
-cd resume
-bundle install
+Setup a directory and a Gemfile with the gem included as:
+```ruby
+  gem 'resume', :github => 'bloodycelt/resume'
 ```
 
 ## Usage
 Build a rl file (or whatever you want to call it) using the DSL described below
 and thor will generate a pdf (named <Your name>'s Resume.pdf ).
 ```bash
-thor resume:build resume.rl
+  resume build resume.rl
 ```
 
 ## The DSL
@@ -93,6 +92,29 @@ It automaticaly sets its dates from the earliest degree started to the latest de
     summarize "What is it like outside?"
   end
 ```
+
+You can add a background image by specifying it:
+```ruby
+background 'my/local/image'
+```
+
+To print the pdf you should put something like:
+```ruby
+print :name
+print :title
+print :email
+print :skills_list, :skills, :title => 'Skills'
+print :summary
+print :experiences, :jobs
+print :experiences, :schools, :title => 'Education'
+print :experiences, :projects
+print :experiences, :samples
+print :skills_list, :hobbies
+```
+
+Typically for experiences, the title defaults to the object
+pluralized. But they can be overriden using the title.
+
 
 ## Objective
 * I needed some decent code samples for my resume, so why not?
