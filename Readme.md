@@ -94,6 +94,10 @@ It automaticaly sets its dates from the earliest degree started to the latest de
 ```
 
 You can add a background image by specifying it:
+
+*NOTE:* The path specified is local to the working directory
+you run the command from.
+
 ```ruby
 background 'my/local/image'
 ```
