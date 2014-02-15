@@ -10,6 +10,8 @@ describe 'Resume' do
   it 'should parse the dsl and print an html' do
     puts ::Resume::Document::Html.method(:new).owner
     doc = ::Resume::Document::Html.new(@resume)
+
+    expect("#{doc.to_html}\n").to eq(FactoryGirl.create(:html))
   end 
 
   it 'should parse the dsl and print an rtf' do

@@ -74,6 +74,11 @@ HERE
     skip_create
   end
 
+  factory :html, :class => String do
+    initialize_with { new(HTML_DOC_FACTORY) }
+    skip_create
+  end
+
 end     # FactoryGirl
 
 RTF_DOC_FACTORY = <<'HERE'
@@ -243,4 +248,53 @@ Bored Now
 \u8226\'3f Xkcd          Drawing Ven Diagrams
 \par}
 }
+HERE
+
+HTML_DOC_FACTORY =<<'HERE'
+<h1 class="resume-header">Mr. Test</h1><p><a href="mailto:test@test.net">test@test.net</a></p><h2 class="resume-header">Summary</h2><p class="resume-summary">I am Awesome</p><h2 class="resume-header">Mad Skillz</h2><table class="table skills-list">
+<tr>
+<td>• Home Economics</td>
+<td>Cat Throwing, SandwichMaking</td>
+</tr>
+<tr>
+<td>• Ruby</td>
+<td>Rspec, Blogging</td>
+</tr>
+<tr>
+<td>• Other</td>
+<td>SnowBoarding</td>
+</tr>
+</table><h2 class="resume-header">Experience</h2><ul class="resume-experience">
+<h3 class="resume-header">Clown at Krusty Burger</h3>
+<li>April 2009 - May 2010 <span class="time-difference">( 1 year ).</span>
+</li>
+<li>Children peed on me.</li>
+<li><ul class="experience-notes">
+<li>Note 0.</li>
+<li>Note 1.</li>
+<li>Note 2.</li>
+<li>Note 3.</li>
+</ul></li>
+</ul><h2 class="resume-header">Education</h2><ul class="resume-experience">
+<h3 class="resume-header">School Of Hard Koncks</h3>
+<li>Bachelor of Arts (B.A) Hulk Smash/Emo
+Please Dont Hurt Me!</li>
+</ul><h2 class="resume-header">Experience</h2><ul class="resume-experience">
+<h3 class="resume-header">RedcoratingMyHead</h3>
+<li>January 2013 - February 2013 <span class="time-difference">(  1 month ).</span>
+</li>
+<li>Navel Gazing</li>
+<li><ul class="experience-notes">
+<li>Ruby on Rails 4.0</li>
+<li>Postgres 9.x</li>
+</ul></li>
+</ul><h2 class="resume-header">Code Samples</h2><ul class="resume-experience">
+<h3 class="resume-header">Resume</h3>
+<li>Website: <a href="http://www.github.com/bloodycelt/resume">http://www.github.com/bloodycelt/resume</a>
+</li>
+<li>The code that built this resume</li>
+</ul><h2 class="resume-header">Bored Now</h2><table class="table skills-list"><tr>
+<td>• Xkcd</td>
+<td>Drawing Ven Diagrams</td>
+</tr></table>
 HERE
