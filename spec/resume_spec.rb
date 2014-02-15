@@ -6,7 +6,12 @@ describe 'Resume' do
   before(:all) do
     @resume = FactoryGirl.create(:resume)
   end
- 
+
+  it 'should parse the dsl and print an html' do
+    puts ::Resume::Document::Html.method(:new).owner
+    doc = ::Resume::Document::Html.new(@resume)
+  end 
+
   it 'should parse the dsl and print an rtf' do
 
     doc = ::Resume::Document::Rtf.new(@resume, RTF::Font.new(RTF::Font::ROMAN, 'Helvetica'))

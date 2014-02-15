@@ -9,7 +9,7 @@ module Resume
     # runs your initialization, then adds the resume attribute.
     def initialize (resume, *args)
       self.resume = Base.new resume, :render => self
-    
+   
       super(*args)
 
       # Call :after_initialize hook if one is defined.

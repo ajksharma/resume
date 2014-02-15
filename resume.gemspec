@@ -11,13 +11,17 @@ Gem::Specification.new do |s|
     lib/resume/base.rb
     lib/resume/cli.rb
     lib/resume/document.rb
+    lib/resume/document/html.rb
     lib/resume/document/pdf.rb
+    lib/resume/document/rtf.rb
     lib/resume/experience.rb
     lib/resume/experience/base.rb
     lib/resume/experience/degree.rb
     lib/resume/experience/job.rb
     lib/resume/experience/project.rb
     lib/resume/experience/school.rb 
+    lib/resume/railtie.rb
+    lib/resume/view_helpers.rb
   )
 
   s.executables = %w(
@@ -32,6 +36,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'activesupport',   '>= 3.2'
   s.add_dependency 'time_difference', '~> 0.2.0'
   s.add_dependency 'clbustos-rtf'
+  s.add_dependency 'nokogiri'
   s.add_dependency 'prawn'
   s.add_dependency 'thor'
   
