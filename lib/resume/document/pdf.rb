@@ -1,5 +1,8 @@
-#!/usr/bin/env ruby
+#lib/resume/document/pdf.rb
 
+# PDF renderer for the resume DSL library.
+# It uses Prawn, so I highly recommend checking out
+# its manual.
 class Resume::Document::Pdf < ::Prawn::Document
   prepend ::Resume::Document
 
@@ -7,16 +10,31 @@ class Resume::Document::Pdf < ::Prawn::Document
 
   @@print_background = false
 
+  # Disables background printing, so one
+  # gets a better document for physical printing.
   def self.print_background= (value)
     @@print_background = value
   end
 
+  # #########################################
   # Resume Interface
-  
+  # These methods are expected by the resume
+  # library.
+
+  # Formats the email:
+  # * underline.
+  # * blue font.
+  # * clickable link to email address.
   def email (data)
     self.formatted_text [ self.href(data, "mailto:#{data}") ]
   end
 
+  # Formats a block for an experience (job, education, etc)
+  # name:: bold
+  # url:: underline blue clickable link
+  # Month YYYY - Month YYYY ( duration ) :: duration in grey font.
+  # Summary Text
+  # Notes:: list
   def experience (data, opts = {})
     self.group do
       self.h2 opts[:title] || 'Experience'
@@ -24,10 +42,14 @@ class Resume::Document::Pdf < ::Prawn::Document
     end
   end
 
+  # Renders the name
+  # * 16 pt font.
+  # * Bold
   def name (data)
     self.h1(data)
   end
 
+  # Renders a category list in a table.
   def skills_list (data, opts = {})
     self.group do
       self.h2 opts[:title] || 'Skills'
@@ -41,7 +63,8 @@ class Resume::Document::Pdf < ::Prawn::Document
                       :height => 18 })
     end
   end
-  
+ 
+  # Renders a text block. 
   def summary (data)
     self.group do
       self.h2 'Summary'
@@ -49,16 +72,26 @@ class Resume::Document::Pdf < ::Prawn::Document
     end
   end
 
+  # Renders a title.
   def title (data)
     self.text data.to_s.titleize
   end
+
+  # #########################################
   
   # Prawn Overrides
-  
+ 
+  # Uses the name on the resume as the basis for the filename. 
   def render_file(*args)
     super("#{self.resume_name.titleize}'s Resume.pdf")
   end   
-  
+ 
+  # Mostly this is overridden to allow for a background image.
+  # Essentially you draw the image, at a height and width of the
+  # page. And to make things more complicated you build a set of 
+  # coordinates to repeat x and repeat y.
+  # After this reset the cursor, so you can draw the rest of the 
+  # content over the image.
   def start_new_page(options = {})
     ret   = super
     start = self.cursor
@@ -107,73 +140,63 @@ class Resume::Document::Pdf < ::Prawn::Document
   private 
 
   def _print_experience (xp)
-    attributes = xp.attributes || {}
+    attr = xp.attributes || {}
+
     group do
       self.move_down 8
-      self.text attributes[:title], :style => :bold
-      if attributes[:site]
+      self.text attr[:title], :style => :bold
+
+      if attr[:site]
         self.formatted_text [ 
           { :text => 'Website: ' }, 
-          self.href(attributes[:site],attributes[:site]) 
+          self.href(attr[:site],attr[:site]) 
         ]
       end
     
-      if attributes[:start_date] && attributes[:end_date]
-        self.formatted_text [
-          { :text =>  [ attributes[:start_date], 
-                        attributes[:end_date] 
-                      ].map do |d| 
-                        if(d.respond_to?(:strftime))
-                          d.strftime("%B %Y") 
-                        else
-                          "#{d}".titleize
-                        end
-                      end.join(' - ') << ' ' 
-          },
-          _time_difference(attributes[:start_date],attributes[:end_date])
-        ]
+      if attr[:start_date] && attr[:end_date]
+        _print_experience_dates(attr[:start_date],
+                                attr[:end_date])
       end
-      self.formatted_text [{ :text => attributes[:text], :color => [80,40,40,50]}]
-      if attributes[:notes]
-        self.indent(20) do
-          self.formatted_text [{
-            :text  => attributes[:notes].map { |n| "\u2022 #{n}" }.flatten.join("\n"),
-            :color => [80,40,40,50]
-          }]
-        end
-      end
+
+      # Description
+      self.formatted_text [{ 
+        :text  => attr[:text], 
+        :color => [80,40,40,50]
+      }]
+
+      _print_experience_notes(attr[:notes]) if attr[:notes]
     end
   end
 
-  def _time_difference(start_date, end_date)
-    t      = TimeDifference.between(
-      *([start_date,end_date].map do |d|
-          if(d == :present)
-            Time.now
-          else
-            d
-          end
-        end))
-    years  = t.in_years.floor
-    months = t.in_months.floor % 12
+  # Returns a text box for experience dates
+  def _print_experience_dates(start_date, end_date)
+    self.formatted_text [
+      { :text =>  [ start_date, 
+                    end_date 
+                  ].map do |d| 
+                    if(d.respond_to?(:strftime))
+                      d.strftime("%B %Y") 
+                    else
+                      "#{d}".titleize
+                    end
+                  end.join(' - ') << ' ' 
+      },
+      { :text   => _time_difference( start_date, end_date),
+        :color  => [0,0,0,50]
+      }
+    ]
+  end
 
-    { :text => '( ' << 
-               if years > 1
-                 "#{years} years"
-               elsif years == 1
-                 '1 year'
-               else
-                 ''
-               end << 
-               if months > 1
-                 " #{months} months"
-               elsif months == 1
-                 ' 1 month'
-               else
-                ''
-               end << ' ).',
-      :color => [0,0,0,50]
-    }
+  # Prints notes
+  # * Inserts a unicode bullet in front of each one.
+  # * Then joins it to one string with a newline.
+  def _print_experience_notes(notes)
+    self.indent(20) do
+      self.formatted_text [{
+        :text  => notes.map { |n| "\u2022 #{n}" }.flatten.join("\n"),
+        :color => [80,40,40,50]
+      }]
+    end
   end
 
 end
