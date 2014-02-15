@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'resume'
-  s.version     = '0.2.0'
+  s.version     = '0.3.0'
   s.summary     = "Gem to build my resume."
   s.description = "For fun I chose to have a ruby gem generate my resume."
   s.authors     = ["Jason Kenney"]
