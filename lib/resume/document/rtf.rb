@@ -21,7 +21,10 @@ class Resume::Document::Rtf < ::RTF::Document
   end
  
   # Resume Interface
-  
+
+  # Renders email
+  # * blue
+  # * underline  
   def email (data)
     self.paragraph(default_style) do |p|
       href(p) do |t|
@@ -30,16 +33,22 @@ class Resume::Document::Rtf < ::RTF::Document
     end
   end
 
+  # Renders experience
   def experience (data, opts = {})
     self.h2 opts[:title] || 'Experience'
     data.inject([]) { |h,i| h << _print_experience(i) }
   end
 
+  # Renders name
+  # * 16 point font.
+  # * bold.
   def name (data)
     self.h1(data)
   end
 
-  # Would have used a table, but RTF is too weird with that, so I'll just use good old
+  # Renders a pseudo table.
+  # Would have used a table, but RTF is too weird with that, 
+  # so I'll just use good old
   # sprintf.
   def skills_list (data, opts = {})
   
@@ -51,7 +60,8 @@ class Resume::Document::Rtf < ::RTF::Document
     end
     
   end
-  
+ 
+  # Just a set of paragraphs. 
   def summary (data)
     style = ::RTF::ParagraphStyle.new(default_style)
     style.first_line_indent = 20 * 20 # This needs to be converted to RTF space.
@@ -61,6 +71,7 @@ class Resume::Document::Rtf < ::RTF::Document
     end
   end
 
+  # Just the title.
   def title (data)
     self.paragraph(default_style) do |p|
       p << data.to_s.titleize
@@ -68,7 +79,8 @@ class Resume::Document::Rtf < ::RTF::Document
   end
   
   # Helper FUnctions
-  
+ 
+  # In case I ever want global paragraph styles. 
   def default_style
     ::RTF::ParagraphStyle.new
   end
@@ -127,7 +139,8 @@ class Resume::Document::Rtf < ::RTF::Document
   end
   
   private
-  
+ 
+  # A large mess... it prints experience blocks. 
   def _print_experience (xp)
     attributes                        = xp.attributes || {}
     text_style                        = ::RTF::CharacterStyle.new
@@ -181,36 +194,6 @@ class Resume::Document::Rtf < ::RTF::Document
         end
       end
     end
-  end
-
-  # Refactor this to be part of the core, in prawn just take the formatting part out.
-  def _time_difference(start_date, end_date)
-    t      = TimeDifference.between(
-      *([start_date,end_date].map do |d|
-          if(d == :present)
-            Time.now
-          else
-            d
-          end
-        end))
-    years  = t.in_years.floor
-    months = t.in_months.floor % 12
-
-   '( ' << 
-    if years > 1
-      "#{years} years"
-    elsif years == 1
-      '1 year'
-    else
-      ''
-    end << 
-    if months > 1
-      " #{months} months"
-    elsif months == 1
-      ' 1 month'
-    else
-     ''
-    end << ' ).'
   end
 
 end
