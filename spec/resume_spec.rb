@@ -1,71 +1,40 @@
 require 'spec_helper'
-
-def render_with(text)
-  ::PDF::Inspector::Text.analyze(::Resume::Document::Pdf.new(text).render)
-end
+require 'factories'
 
 describe 'Resume' do
 
-  # Honestly its easier just to have it all here
-  it 'should parse the dsl, and print a pdf' do
-    resume = <<HERE
-      name 'Mr. Test'
-      email 'test@test.net'
+  before(:all) do
+    @resume = FactoryGirl.create(:resume)
+  end
+ 
+  it 'should parse the dsl and print an rtf' do
 
-      skill 'Cat Throwing',   :under => 'Home Economics'
-      skill :sandwich_making, :under => 'Home Economics'
-      skill :snow_boarding
-      skill :rspec,           :under => :ruby
-      skill :blogging,        :under => :ruby
-      
-      summarize 'I am Awesome'
-      
-      hobby 'Drawing Ven Diagrams', :under => 'XKCD'
-      
-      
-      job :clown, :at => :krusty_burger do
-        from :apr, 2009
-        to   :may, 2010 
-        summarize 'Children peed on me.'
-        note 'Note 0.'
-        note 'Note 1.'
-        note 'Note 2.' 
-        note 'Note 3.'
-      end
-      
-      project :redcorating_my_head do
-        from :jan, 2013
-        to   :feb, 2013
-        summarize 'Navel Gazing'
-        tech 'Ruby on Rails 4.0'
-        tech 'Postgres 9.x'
-      end
+    doc = ::Resume::Document::Rtf.new(@resume, RTF::Font.new(RTF::Font::ROMAN, 'Helvetica'))
+    
+    # For testing set creation date to the factory.
+    # Also appended a newline, as HERE docs do that, and
+    # M$ breaks UNIX convention by NOT Ending a text documnent
+    # with a newline.
+    doc.information.created = '2014-02-14 23:30'
+    expect("#{doc.to_rtf}\n").to eq(FactoryGirl.create(:rtf))
+    
+  end
 
-      sample :resume,   
-       :summary => 'The code that built this resume', 
-       :under   => :bloodycelt
-      
-      school :school_of_hard_koncks do
-        degree :ba do
-          major :hulk_smash 
-          major :emo
-        end
-        summarize 'Please Dont Hurt Me!'
-      end
+  # PDF Inspector allows you to access an array of all strings
+  # from the pdf. This is the only way to determine if the pdf
+  # generates with the content, obviously generating an actual
+  # pdf is the only real way to match it.
+  context 'it should parse the dsl, print the pdf and' do
+    before do
+      @resume_strings = ::PDF::Inspector::Text.analyze(
+        ::Resume::Document::Pdf.new(@resume).render ).strings
+    end
 
-      print :name
-      print :email
-      print :skills_list, :skills,    :title => 'Mad Skillz'
-      print :experience,  :jobs,      :title => 'Experience'
-      print :experience,  :schools,   :title => 'Education'
-      print :experience,  :projects
-      print :experience,  :samples,   :title => 'Code Samples'
-      print :skills_list, :hobbies,   :title => 'Bored Now'
-      
-HERE
-      expected = [
-      'Mr. Test', 
+    # This should get put into a factory maybe?
+    [ 'Mr. Test', 
       'test@test.net', 
+      'Summary',
+      'I am Awesome',
       'Mad Skillz', 
       '• Home Economics', 
       'Cat Throwing, SandwichMaking', 
@@ -99,13 +68,12 @@ HERE
       'The code that built this resume', 
       'Bored Now', 
       '• Xkcd', 
-      'Drawing Ven Diagrams'
-    ]
-   
-     
-    render_with(resume).strings.each_with_index do |item, idx|
-      expect(item).to eq(expected[idx])
-    end
-  end
-
-end
+      'Drawing Ven Diagrams' 
+    ].each_with_index do |item, idx|
+        
+      it "should contain '#{item} at #{idx}'" do
+        expect(@resume_strings[idx]).to eq item
+      end
+    end # loop
+  end # context
+end # describe
