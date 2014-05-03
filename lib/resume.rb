@@ -1,8 +1,8 @@
-
 require 'active_support/inflector'
 require 'date'
 require 'nokogiri'
 require 'prawn'
+require 'prawn-grouping'
 require 'rtf'
 require 'thor'
 require 'time_difference'
