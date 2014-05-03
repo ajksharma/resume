@@ -37,7 +37,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'time_difference', '~> 0.2.0'
   s.add_dependency 'clbustos-rtf'
   s.add_dependency 'nokogiri'
-  s.add_dependency 'prawn'
+  s.add_dependency 'prawn', '~> 1.0.0'
+  s.add_dependency 'prawn-grouping'
   s.add_dependency 'thor'
   
 end
