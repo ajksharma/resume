@@ -8,12 +8,20 @@ class Resume::Document::Pdf < ::Prawn::Document
 
   delegate :background, :name, :to => :resume, :prefix => true
 
+
   @@print_background = false
 
   # Disables background printing, so one
   # gets a better document for physical printing.
   def self.print_background= (value)
     @@print_background = value
+  end
+
+  #Grouping is no longer supported in prawn, but
+  # I will put a override to do nothing just in case it
+  # works at a later date.
+  def group
+    yield
   end
 
   # #########################################
