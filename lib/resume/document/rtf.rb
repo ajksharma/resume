@@ -166,16 +166,11 @@ class Resume::Document::Rtf < ::RTF::Document
                attributes[:end_date] 
              ].map do |d| 
                if(d.respond_to?(:strftime))
-                 d.strftime("%B %Y") 
+                 d.strftime("%Y") 
                else
                  "#{d}".titleize
                end
-             end.join(' - ') << ' ' )
-             
-        p.apply(time_difference_style) do |t|
-          t << _time_difference(attributes[:start_date],attributes[:end_date])
-        end
-        
+             end.uniq.join(' - ') << ' ' )
       end
     end
     

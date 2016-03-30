@@ -183,14 +183,11 @@ class Resume::Document::Pdf < ::Prawn::Document
                     end_date 
                   ].map do |d| 
                     if(d.respond_to?(:strftime))
-                      d.strftime("%B %Y") 
+                      d.strftime("%Y") 
                     else
                       "#{d}".titleize
                     end
-                  end.join(' - ') << ' ' 
-      },
-      { :text   => _time_difference( start_date, end_date),
-        :color  => [0,0,0,50]
+                  end.uniq.join(' - ') << ' ' 
       }
     ]
   end

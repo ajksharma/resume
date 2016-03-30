@@ -90,7 +90,6 @@ RTF_DOC_FACTORY = <<'HERE'
 ;
 \red4\green69\blue173;
 \red77\green102\blue102;
-\red128\green128\blue128;
 \red25\green77\blue77;
 }
 {\info
@@ -141,33 +140,30 @@ Clown at Krusty Burger
 }
 \par}
 {\pard\ql
-April 2009 - May 2010 
-{\cf3
-( 1 year ).
-}
+2009 - 2010 
 \par}
 {\pard\ql
-{\cf4
+{\cf3
 Children peed on me.
 }
 \par}
 {\pard\ql\li400
-{\cf4
+{\cf3
 \u8226\'3f Note 0.
 }
 \par}
 {\pard\ql\li400
-{\cf4
+{\cf3
 \u8226\'3f Note 1.
 }
 \par}
 {\pard\ql\li400
-{\cf4
+{\cf3
 \u8226\'3f Note 2.
 }
 \par}
 {\pard\ql\li400
-{\cf4
+{\cf3
 \u8226\'3f Note 3.
 }
 \par}
@@ -182,7 +178,7 @@ School Of Hard Koncks
 }
 \par}
 {\pard\ql
-{\cf4
+{\cf3
 Bachelor of Arts (B.A) Hulk Smash/Emo
 Please Dont Hurt Me!
 }
@@ -198,23 +194,20 @@ RedcoratingMyHead
 }
 \par}
 {\pard\ql
-January 2013 - February 2013 
-{\cf3
-(  1 month ).
-}
+2013 
 \par}
 {\pard\ql
-{\cf4
+{\cf3
 Navel Gazing
 }
 \par}
 {\pard\ql\li400
-{\cf4
+{\cf3
 \u8226\'3f Ruby on Rails 4.0
 }
 \par}
 {\pard\ql\li400
-{\cf4
+{\cf3
 \u8226\'3f Postgres 9.x
 }
 \par}
@@ -235,7 +228,7 @@ http://www.github.com/bloodycelt/resume
 }
 \par}
 {\pard\ql
-{\cf4
+{\cf3
 The code that built this resume
 }
 \par}
@@ -270,7 +263,7 @@ HTML_DOC_FACTORY =<<'HERE'
 <dl class="resume-experience">
 <dt>
 <p>Krusty Burger</p>
-<p>April 2009 - May 2010 </p>
+<p>2009 - 2010 </p>
 </dt>
 <dd class="resume-experience-position">Clown</dd>
 <dd>Children peed on me.</dd>
@@ -289,7 +282,7 @@ Please Dont Hurt Me!</dd>
 <dl class="resume-experience">
 <dt>
 <p>RedcoratingMyHead</p>
-<p>January 2013 - February 2013 </p>
+<p>2013 </p>
 </dt>
 <dd>Navel Gazing</dd>
 <dd><ul class="experience-notes">

@@ -234,11 +234,11 @@ class Resume::Document::Html
   def _print_experience_dates(start_date, end_date)
     [ start_date, end_date ].map do |d| 
       if(d.respond_to?(:strftime))
-        d.strftime("%B %Y") 
+        d.strftime("%Y") 
       else
         "#{d}".titleize
       end
-    end.join(' - ') << ' ' 
+    end.uniq.join(' - ') << ' ' 
   end
 
   # Prints notes
