@@ -246,20 +246,16 @@ HERE
 HTML_DOC_FACTORY =<<'HERE'
 <h1 class="resume-header">Mr. Test</h1><p><a href="mailto:test@test.net">test@test.net</a></p><section class="summary-section"><h2 class="resume-header">Summary</h2>
 <p class="resume-summary">I am Awesome</p></section><section class="skills-section"><h2 class="resume-header">Mad Skillz</h2>
-<table class="table skills-list">
-<tr>
-<td>• Home Economics</td>
-<td>Cat Throwing, SandwichMaking</td>
-</tr>
-<tr>
-<td>• Ruby</td>
-<td>Rspec, Blogging</td>
-</tr>
-<tr>
-<td>• Other</td>
-<td>SnowBoarding</td>
-</tr>
-</table></section><section class="experience-section"><h2 class="resume-header">Experience</h2>
+<dl class="resume-skills">
+<dt>Home Economics</dt>
+<dd>Cat Throwing</dd>
+<dd>SandwichMaking</dd>
+<dt>Ruby</dt>
+<dd>Rspec</dd>
+<dd>Blogging</dd>
+<dt>Other</dt>
+<dd>SnowBoarding</dd>
+</dl></section><section class="experience-section"><h2 class="resume-header">Experience</h2>
 <dl class="resume-experience">
 <dt>
 <p>Krusty Burger</p>
@@ -296,8 +292,8 @@ Please Dont Hurt Me!</dd>
 </dd>
 <dd>The code that built this resume</dd>
 </dl></section><section class="skills-section"><h2 class="resume-header">Bored Now</h2>
-<table class="table skills-list"><tr>
-<td>• Xkcd</td>
-<td>Drawing Ven Diagrams</td>
-</tr></table></section>
+<dl class="resume-skills">
+<dt>Xkcd</dt>
+<dd>Drawing Ven Diagrams</dd>
+</dl></section>
 HERE

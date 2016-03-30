@@ -69,24 +69,19 @@ class Resume::Document::Html
   def skills_list (data, opts = {})
     self.doc.add_child( section(:class => 'skills-section') do |section_node|
       section_node.add_child( self.h2(opts[:title] || 'Skills') )
-      table           = Nokogiri::XML::Node.new 'table', self.doc
-      table['class']  = 'table skills-list'
+      section_node.add_child( dl(:class => 'resume-skills') do |dl_node|
+        data.to_a.each do |(topic, list)|
+          dl_node.add_child( dt do |dt_node|
+            dt_node.content = topic
+          end )
 
-      data.to_a.each do |i| 
-        tr    = Nokogiri::XML::Node.new 'tr', self.doc
-        col1  = Nokogiri::XML::Node.new 'td', self.doc
-        col2  = Nokogiri::XML::Node.new 'td', self.doc
-
-        col1.content = "\xe2\x80\xa2 #{i[0]}"
-        col2.content = i[1].join(', ') 
-        
-        tr.add_child(col1)
-        tr.add_child(col2)
-
-        table.add_child(tr)
-      end
-
-      section_node.add_child(table)
+          list.each do |i|
+            dl_node.add_child( dd do |dd_node|
+              dd_node.content = i
+            end )
+          end
+        end
+      end )
     end )
   end
  
