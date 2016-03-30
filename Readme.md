@@ -6,7 +6,7 @@ The resume builder for my resume.
 ## Installation
 Setup a directory and a Gemfile with the gem included as:
 ```ruby
-  gem 'resume', :github => 'bloodycelt/resume'
+  gem 'resume', :github => 'therealjasonkenney/resume'
 ```
 
 ## Usage

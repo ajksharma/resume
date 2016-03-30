@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    resume (0.3.4)
+    resume (0.4.1)
       activesupport (>= 3.2)
       clbustos-rtf
       nokogiri

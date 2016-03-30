@@ -251,7 +251,9 @@ Bored Now
 HERE
 
 HTML_DOC_FACTORY =<<'HERE'
-<h1 class="resume-header">Mr. Test</h1><p><a href="mailto:test@test.net">test@test.net</a></p><h2 class="resume-header">Summary</h2><p class="resume-summary">I am Awesome</p><h2 class="resume-header">Mad Skillz</h2><table class="table skills-list">
+<h1 class="resume-header">Mr. Test</h1><p><a href="mailto:test@test.net">test@test.net</a></p><section class="summary-section"><h2 class="resume-header">Summary</h2>
+<p class="resume-summary">I am Awesome</p></section><section class="skills-section"><h2 class="resume-header">Mad Skillz</h2>
+<table class="table skills-list">
 <tr>
 <td>• Home Economics</td>
 <td>Cat Throwing, SandwichMaking</td>
@@ -264,7 +266,7 @@ HTML_DOC_FACTORY =<<'HERE'
 <td>• Other</td>
 <td>SnowBoarding</td>
 </tr>
-</table><section class="experience-section"><h2 class="resume-header">Experience</h2>
+</table></section><section class="experience-section"><h2 class="resume-header">Experience</h2>
 <dl class="resume-experience">
 <dt>
 <p>Krusty Burger</p>
@@ -300,8 +302,9 @@ Please Dont Hurt Me!</dd>
 <dd>Website: <a href="http://www.github.com/bloodycelt/resume">http://www.github.com/bloodycelt/resume</a>
 </dd>
 <dd>The code that built this resume</dd>
-</dl></section><h2 class="resume-header">Bored Now</h2><table class="table skills-list"><tr>
+</dl></section><section class="skills-section"><h2 class="resume-header">Bored Now</h2>
+<table class="table skills-list"><tr>
 <td>• Xkcd</td>
 <td>Drawing Ven Diagrams</td>
-</tr></table>
+</tr></table></section>
 HERE

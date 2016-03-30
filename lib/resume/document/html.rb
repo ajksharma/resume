@@ -44,8 +44,8 @@ class Resume::Document::Html
 
       data.map do |i|
         _print_experience(i)
-      end.reduce(section_node) do |memo,i|
-        memo.add_child(i)
+      end.each do |i|
+        section_node.add_child(i)
       end
     end )
   end
@@ -68,7 +68,7 @@ class Resume::Document::Html
   # I use bootstrap classes when needed.
   def skills_list (data, opts = {})
     self.doc.add_child( section(:class => 'skills-section') do |section_node|
-      self.doc.add_child( self.h2(opts[:title] || 'Skills') )
+      section_node.add_child( self.h2(opts[:title] || 'Skills') )
       table           = Nokogiri::XML::Node.new 'table', self.doc
       table['class']  = 'table skills-list'
 
