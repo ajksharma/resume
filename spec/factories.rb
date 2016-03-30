@@ -264,36 +264,43 @@ HTML_DOC_FACTORY =<<'HERE'
 <td>• Other</td>
 <td>SnowBoarding</td>
 </tr>
-</table><h2 class="resume-header">Experience</h2><ul class="resume-experience">
-<h3 class="resume-header">Clown at Krusty Burger</h3>
-<li>April 2009 - May 2010 <span class="time-difference">( 1 year ).</span>
-</li>
-<li>Children peed on me.</li>
-<li><ul class="experience-notes">
+</table><section class="experience-section"><h2 class="resume-header">Experience</h2>
+<dl class="resume-experience">
+<dt>
+<p>Krusty Burger</p>
+<p>April 2009 - May 2010 </p>
+</dt>
+<dd class="resume-experience-position">Clown</dd>
+<dd>Children peed on me.</dd>
+<dd><ul class="experience-notes">
 <li>Note 0.</li>
 <li>Note 1.</li>
 <li>Note 2.</li>
 <li>Note 3.</li>
-</ul></li>
-</ul><h2 class="resume-header">Education</h2><ul class="resume-experience">
-<h3 class="resume-header">School Of Hard Koncks</h3>
-<li>Bachelor of Arts (B.A) Hulk Smash/Emo
-Please Dont Hurt Me!</li>
-</ul><h2 class="resume-header">Experience</h2><ul class="resume-experience">
-<h3 class="resume-header">RedcoratingMyHead</h3>
-<li>January 2013 - February 2013 <span class="time-difference">(  1 month ).</span>
-</li>
-<li>Navel Gazing</li>
-<li><ul class="experience-notes">
+</ul></dd>
+</dl></section><section class="experience-section"><h2 class="resume-header">Education</h2>
+<dl class="resume-experience">
+<dt><p>School Of Hard Koncks</p></dt>
+<dd>Bachelor of Arts (B.A) Hulk Smash/Emo
+Please Dont Hurt Me!</dd>
+</dl></section><section class="experience-section"><h2 class="resume-header">Experience</h2>
+<dl class="resume-experience">
+<dt>
+<p>RedcoratingMyHead</p>
+<p>January 2013 - February 2013 </p>
+</dt>
+<dd>Navel Gazing</dd>
+<dd><ul class="experience-notes">
 <li>Ruby on Rails 4.0</li>
 <li>Postgres 9.x</li>
-</ul></li>
-</ul><h2 class="resume-header">Code Samples</h2><ul class="resume-experience">
-<h3 class="resume-header">Resume</h3>
-<li>Website: <a href="http://www.github.com/bloodycelt/resume">http://www.github.com/bloodycelt/resume</a>
-</li>
-<li>The code that built this resume</li>
-</ul><h2 class="resume-header">Bored Now</h2><table class="table skills-list"><tr>
+</ul></dd>
+</dl></section><section class="experience-section"><h2 class="resume-header">Code Samples</h2>
+<dl class="resume-experience">
+<dt><p>Resume</p></dt>
+<dd>Website: <a href="http://www.github.com/bloodycelt/resume">http://www.github.com/bloodycelt/resume</a>
+</dd>
+<dd>The code that built this resume</dd>
+</dl></section><h2 class="resume-header">Bored Now</h2><table class="table skills-list"><tr>
 <td>• Xkcd</td>
 <td>Drawing Ven Diagrams</td>
 </tr></table>

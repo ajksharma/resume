@@ -4,7 +4,9 @@ module Resume
       
       def attributes
         super.merge(
-          :title => "#{title.to_s.titleize} at #{self.at.to_s.titleize}"
+          :employer => self.at.to_s.titleize,
+          :position => title.to_s.titleize,
+          :title    => "#{title.to_s.titleize} at #{self.at.to_s.titleize}"
         )
       end
       

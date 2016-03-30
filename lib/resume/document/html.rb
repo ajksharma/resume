@@ -39,8 +39,15 @@ class Resume::Document::Html
   # Summary Text
   # Notes:: list
   def experience (data, opts = {})
-    self.h2 opts[:title] || 'Experience'
-    data.inject([]) { |h,i| h << _print_experience(i) }
+    self.doc.add_child( section(:class => 'experience-section') do |section_node|
+      section_node.add_child( h2(opts[:title] || 'Experience' ) )
+
+      data.map do |i|
+        _print_experience(i)
+      end.reduce(section_node) do |memo,i|
+        memo.add_child(i)
+      end
+    end )
   end
 
   # Renders the name
@@ -50,35 +57,45 @@ class Resume::Document::Html
     self.h1(data)
   end
 
+  def section(opts = {})
+    _new_node('section', self.doc).tap do |section_node|
+      opts.each { |k,v| section_node[k.to_s] = v }
+      yield section_node if block_given?
+    end
+  end
+
   # Renders a category list in a table.
   # I use bootstrap classes when needed.
   def skills_list (data, opts = {})
-    self.h2 opts[:title] || 'Skills'
-    table           = Nokogiri::XML::Node.new 'table', self.doc
-    table['class']  = 'table skills-list'
+    self.doc.add_child( section(:class => 'skills-section') do |section_node|
+      self.doc.add_child( self.h2(opts[:title] || 'Skills') )
+      table           = Nokogiri::XML::Node.new 'table', self.doc
+      table['class']  = 'table skills-list'
 
-    data.to_a.each do |i| 
-      tr    = Nokogiri::XML::Node.new 'tr', self.doc
-      col1  = Nokogiri::XML::Node.new 'td', self.doc
-      col2  = Nokogiri::XML::Node.new 'td', self.doc
+      data.to_a.each do |i| 
+        tr    = Nokogiri::XML::Node.new 'tr', self.doc
+        col1  = Nokogiri::XML::Node.new 'td', self.doc
+        col2  = Nokogiri::XML::Node.new 'td', self.doc
 
-      col1.content = "\xe2\x80\xa2 #{i[0]}"
-      col2.content = i[1].join(', ') 
-      
-      tr.add_child(col1)
-      tr.add_child(col2)
+        col1.content = "\xe2\x80\xa2 #{i[0]}"
+        col2.content = i[1].join(', ') 
+        
+        tr.add_child(col1)
+        tr.add_child(col2)
 
-      table.add_child(tr)
-    end
+        table.add_child(tr)
+      end
 
-    self.doc.add_child(table)
+      section_node.add_child(table)
+    end )
   end
  
   # Renders a text block. 
   def summary (data)
-    self.h2 'Summary' 
-    p           = p data, :class => 'resume-summary'
-    self.doc.add_child(p)
+    self.doc.add_child(section(:class => 'summary-section') do |section_node|
+      section_node.add_child(self.h2('Summary'))
+      section_node.add_child(p(data, :class => 'resume-summary'))
+    end )
   end
 
   # Renders a title.
@@ -95,11 +112,11 @@ class Resume::Document::Html
     self.doc.add_child(h)
   end
 
-  def h2 (t) 
-    h           = Nokogiri::XML::Node.new 'h2', self.doc
-    h.content   = t
-    h['class']  = 'resume-header'
-    self.doc.add_child(h)
+  def h2 (t)
+    _new_node('h2', self.doc).tap do |h|
+      h.content   = t
+      h['class']  = 'resume-header'
+    end
   end
 
   def h3 (t)
@@ -114,6 +131,27 @@ class Resume::Document::Html
     p_node.content = t
     opts.each { |k,v| p_node[k.to_s] = v }
     p_node
+  end
+
+  def dl (opts = {})
+    dl_node        = Nokogiri::XML::Node.new 'dl', self.doc
+    opts.each { |k,v| dl_node[k.to_s] = v }
+    yield dl_node if block_given?
+    dl_node
+  end
+
+  def dt (opts = {})
+    dt_node        = Nokogiri::XML::Node.new 'dt', self.doc
+    opts.each { |k,v| dt_node[k.to_s] = v }
+    yield dt_node if block_given?
+    dt_node
+  end
+
+  def dd (opts = {})
+    dd_node        = Nokogiri::XML::Node.new 'dd', self.doc
+    opts.each { |k,v| dd_node[k.to_s] = v }
+    yield dd_node if block_given?
+    dd_node
   end
 
   def ul (opts = {})
@@ -147,45 +185,49 @@ class Resume::Document::Html
     span_node
   end
 
-  private 
+  private
+
+  def _new_node(*args)
+    Nokogiri::XML::Node.new(*args)
+  end
 
   def _print_experience (xp)
     attr              = xp.attributes || {}
-
+    title             = attr[:employer] || attr[:title] || ''
     # You need to use parenthesis to force the nodes to execute the blocks
     # first, then get added to the doc.
-    self.doc.add_child( ul(:class => 'resume-experience') do |section|
-      section.add_child h3(attr[:title])
+    dl(:class => 'resume-experience') do |section|
+
+      section.add_child( dt do |title_node|
+        title_node.add_child( p(title) )
+        if attr[:start_date] && attr[:end_date]
+          title_node.add_child( p( _print_experience_dates(attr[:start_date], attr[:end_date])))
+        end
+      end )
+
+      if attr[:position]
+        section.add_child( dd(:class => 'resume-experience-position') do |pos|
+          pos.content = attr[:position]
+        end )
+      end
 
       if attr[:site]
-        section.add_child( li do |site|
+        section.add_child( dd do |site|
           site.content      = 'Website: '
           site.add_child( href(attr[:site]) )
         end )
       end
 
-      if attr[:start_date] && attr[:end_date]
-        section.add_child( li do |dates|
-          dates.content =  _print_experience_dates(attr[:start_date],
-                                                   attr[:end_date])
-
-          dates.add_child span(
-            _time_difference( attr[:start_date], attr[:end_date]),
-            :class => 'time-difference')
-            
-        end )
-      end
-
-      section.add_child( li do |description|
+      section.add_child( dd do |description|
         description.content = attr[:text]
       end )
-      
+
       if attr[:notes]
-        section.add_child( li do |notes|
+        section.add_child( dd do |notes|
           notes.add_child(_print_experience_notes(attr[:notes])) if attr[:notes]
         end )
       end
-    end )
+    end
   end
 
   # Returns a text box for experience dates
